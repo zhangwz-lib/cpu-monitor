@@ -19,8 +19,13 @@ public class MonitorService {
     private MonitorProperties monitorProperties;
 
     public void init() {
+        String kafkaTopic = monitorProperties.getKafkaTopic();
+        if (kafkaTopic == null || "".equals(kafkaTopic)) {
+            logger.error("cpu monitor kafka topic not exits");
+            return;
+        }
         NamedScheduledExecutorService namedScheduledExecutorService = new NamedScheduledExecutorService("cpu-monitor", 10);
-        namedScheduledExecutorService.scheduleAtFixedRate(new MonitorTask(kafkaTemplate, monitorProperties.getKafkaTopic()), 1000, monitorProperties.getFrequency(), TimeUnit.MILLISECONDS);
+        namedScheduledExecutorService.scheduleAtFixedRate(new MonitorTask(kafkaTemplate, kafkaTopic), 1000, monitorProperties.getFrequency(), TimeUnit.MILLISECONDS);
         logger.debug("启动cpu监控信息");
     }
 }
