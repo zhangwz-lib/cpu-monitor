@@ -11,10 +11,13 @@ import java.lang.management.MemoryMXBean;
 public class MonitorTask implements Runnable {
 
     private KafkaTemplate kafkaTemplate;
-   private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public MonitorTask(KafkaTemplate kafkaTemplate) {
+    private String kafkaTopic;
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    public MonitorTask(KafkaTemplate kafkaTemplate, String kafkaTopic) {
         this.kafkaTemplate = kafkaTemplate;
+        this.kafkaTopic = kafkaTopic;
     }
 
     @Override
@@ -30,10 +33,10 @@ public class MonitorTask implements Runnable {
             double systemCpuLoad = osmxb.getSystemLoadAverage();
             double processCpuLoad = osmxb.getProcessCpuLoad();
 
-            kafkaTemplate.send("test", "sss");
-            logger.info("max：" + max + " used:" + used + " init:" + init + " SystemCpuLoad:" + systemCpuLoad + " processCpuLoad: " + processCpuLoad);
+            kafkaTemplate.send(kafkaTopic, "sss");
+            logger.debug("max：{} used: {} init: {} SystemCpuLoad: {} processCpuLoad: {}", max, used, init, systemCpuLoad, processCpuLoad);
         } catch (Exception e) {
-            System.out.println(e);
+            logger.error("cpu monitor handle error：{}", e);
         }
 
     }

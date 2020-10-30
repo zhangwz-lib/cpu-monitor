@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(MonitorProperties.class)
 @ConditionalOnClass(MonitorService.class)
-@ConditionalOnProperty(prefix = "awifi.capacity.monitor", value = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "awifi.capacity.monitor", value = {"enable"}, havingValue = "true")
 public class AutoConfigurationMonitor {
 
     @Bean(initMethod = "init")
