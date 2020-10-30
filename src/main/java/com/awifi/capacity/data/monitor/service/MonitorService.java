@@ -14,7 +14,7 @@ public class MonitorService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private KafkaTemplate kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
     @Autowired
     private MonitorProperties monitorProperties;
 

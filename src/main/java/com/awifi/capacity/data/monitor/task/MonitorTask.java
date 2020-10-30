@@ -10,7 +10,7 @@ import java.lang.management.MemoryMXBean;
 
 public class MonitorTask implements Runnable {
 
-    private KafkaTemplate kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     private String kafkaTopic;
     private Logger logger = LoggerFactory.getLogger(getClass());
