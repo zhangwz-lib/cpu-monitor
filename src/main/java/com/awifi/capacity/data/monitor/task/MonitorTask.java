@@ -7,6 +7,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.net.InetAddress;
 
 public class MonitorTask implements Runnable {
 
@@ -34,7 +35,9 @@ public class MonitorTask implements Runnable {
             double processCpuLoad = osmxb.getProcessCpuLoad();
 
             kafkaTemplate.send(kafkaTopic, "sss");
-            logger.debug("max：{} used: {} init: {} SystemCpuLoad: {} processCpuLoad: {}", max, used, init, systemCpuLoad, processCpuLoad);
+            String hostName = InetAddress.getLocalHost().getHostName();
+            String currentIpAddress = InetAddress.getByName(hostName).getHostAddress();
+            logger.info("max：{} used: {} init: {} SystemCpuLoad: {} processCpuLoad: {}  currentIpAddress： {}", max, used, init, systemCpuLoad, processCpuLoad, currentIpAddress);
         } catch (Exception e) {
             logger.error("cpu monitor handle error：{}", e);
         }
